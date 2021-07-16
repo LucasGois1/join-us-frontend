@@ -3,6 +3,8 @@ export default {
     green_dark: '#52665A',
     background: '#FFFFFF',
     white: '#FFFFFF',
-    black: '#5C6660'
+    dark_white: '#CFCFCF',
+    black: '#5C6660',
+    gray: '#5C6660'
   };
   

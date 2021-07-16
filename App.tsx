@@ -1,5 +1,5 @@
+import React, { Fragment, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import React, { Fragment } from 'react';
 
 import Routes from './src/routes';
 
