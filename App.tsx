@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { StatusBar } from 'expo-status-bar';
 
 import Routes from './src/routes';

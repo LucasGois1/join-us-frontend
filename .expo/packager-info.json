@@ -2,7 +2,7 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19000,
-  "packagerPid": 18326,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://kp-47p.ryanbasque.join-us-frontend.exp.direct",
   "packagerNgrokUrl": "https://packager.kp-47p.ryanbasque.join-us-frontend.exp.direct",
   "ngrokPid": 30667

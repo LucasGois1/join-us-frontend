@@ -12,24 +12,36 @@ import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 
 import LogoImage from '../../components/LogoImage';
+import GreenButton from '../../components/GreenButton';
 
 const CreateAccount: React.FC = () => {
     const [name, onNameChange] = useState('');
     const [email, onEmailChange] = useState('');
     const [password, onPasswordChange] = useState('');
+    const [passwordConfirmation, onPasswordConfirmationChange] = useState('');
+    const [emailInvalid, setEmailInvalid] = useState(false);
+    const [passwordDontMatch, setPasswordDontMatch] = useState(false);
 
     const navigation = useNavigation();
 
-    const handleNextPage = () => {
-        navigation.navigate('Login');
+    const handleNextPage = (screenTitle: string) => {
+        navigation.navigate(screenTitle);
+    };
+
+    const handleSubmitUser = () => {
+        if(password !== passwordConfirmation) {
+            setPasswordDontMatch(true);
+        } else {
+            setPasswordDontMatch(false);
+        }
     };
 
     return (
         <SafeAreaView>
-            <KeyboardAvoidingView 
-                behavior="position" 
+            <KeyboardAvoidingView
                 style={{marginTop: 30}}
-                enabled 
+                behavior="position" 
+                enabled
             >
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
@@ -50,8 +62,13 @@ const CreateAccount: React.FC = () => {
                         </View>
                         <View>
                             <TextInput
-                                style={styles.formInput}
+                                style={{ 
+                                    ...styles.formInput, 
+                                    borderBottomColor: emailInvalid ? '#E83F5B' 
+                                    : styles.formInput['borderBottomColor']
+                                }}
                                 placeholderTextColor="#5C6660"
+                                keyboardType="email-address"
                                 placeholder="Digite seu melhor email"
                                 onChangeText={onEmailChange}
                                 value={email}
@@ -59,7 +76,7 @@ const CreateAccount: React.FC = () => {
                         </View>
                         <View>
                             <TextInput
-                                style={{...styles.formInput, marginBottom: 20}}
+                                style={{...styles.formInput}}
                                 placeholderTextColor="#5C6660"
                                 placeholder="Digite uma senha"
                                 onChangeText={onPasswordChange}
@@ -67,18 +84,38 @@ const CreateAccount: React.FC = () => {
                                 secureTextEntry={true}
                             />
                         </View>
+                        <View>
+                            <TextInput
+                                style={{ 
+                                    ...styles.formInput,
+                                    marginBottom: 20,
+                                    borderBottomColor: passwordDontMatch ? '#E83F5B' 
+                                    : styles.formInput['borderBottomColor']
+                                }}
+                                placeholderTextColor="#5C6660"
+                                placeholder="Confirme sua senha"
+                                onChangeText={onPasswordConfirmationChange}
+                                value={passwordConfirmation}
+                                secureTextEntry={true}
+                            />
+                        </View>
 
                         <View style={styles.haveAccountContainer}>
                             <TouchableOpacity 
                                 style={styles.haveAccountButton}
-                                onPress={handleNextPage}
+                                onPress={() => handleNextPage('Login')}
                             >
                                 <Text style={styles.haveAccountText}>Já tenho uma conta</Text>
                             </TouchableOpacity>
                         </View>
 
-                        <View>
-
+                        <View style={styles.buttonContainer}>
+                            <GreenButton
+                                style={styles.button}
+                                active={true}
+                                title="Criar conta"
+                                onPress={handleSubmitUser}
+                            />
                         </View>
                     </View>
                 </View>

@@ -3,6 +3,7 @@ import {
     Text, 
     View, 
     SafeAreaView,
+    FlatList
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
@@ -26,7 +27,7 @@ const OnBoarding: React.FC = () => {
                         <Text style={styles.titleText}>Reuna pessoas {"\n"} de forma segura, {"\n"} Join Us!</Text>
                 </View>
                 <View style={styles.imageContainer}>
-                        <LogoImage />
+                    <LogoImage />
                 </View>
                 <View style={styles.descriptionContainer}>
                     <Text style={styles.descriptionText}>
@@ -37,10 +38,10 @@ const OnBoarding: React.FC = () => {
                     </Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <GreenButton 
+                    <GreenButton
                         style={styles.button}
-                        activeIcon 
-                        active={false} 
+                        activeIcon
+                        active={true} 
                         onPress={handleNextPage}
                     />
                 </View>
