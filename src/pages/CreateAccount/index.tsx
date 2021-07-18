@@ -8,20 +8,21 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
 
 import styles from "./styles";
 
 import LogoImage from "../../components/LogoImage";
 import GreenButton from "../../components/GreenButton";
 import { HttpContext } from "../../context/httpContext";
+import useNotification from "../../hooks/useNotification";
 
 const CreateAccount: React.FC = () => {
   const [name, onNameChange] = useState("");
   const [email, onEmailChange] = useState("");
   const [password, onPasswordChange] = useState("");
   const [passwordConfirmation, onPasswordConfirmationChange] = useState("");
-  const [emailInvalid, setEmailInvalid] = useState(false);
+  const [invalidEmail, setInvalidEmail] = useState(false);
   const [passwordDontMatch, setPasswordDontMatch] = useState(false);
   const request = useContext(HttpContext);
 
@@ -31,36 +32,28 @@ const CreateAccount: React.FC = () => {
     navigation.navigate(screenTitle);
   };
 
-    const handleSubmitUser = () => {
-        let showToast: any = Toast;
+  const handleSubmitUser = async () => {
+    if (!email) {
+      setInvalidEmail(true);
+      useNotification("error", "Ops!", "Você precisa inserir um e-mail 😅");
+      return;
+    }
 
-        if(!email) {
-            showToast.show({
-                type: 'error',
-                position: 'top',
-                text1: 'Erro',
-                text2: 'Você precisa digitar seu email 😔',
-                visibilityTime: 4000,
-                autoHide: true,
-                topOffset: 30,
-              });
-        };
+    if (password !== passwordConfirmation) {
+      useNotification("error", "Ops!", "Suas senhas não coincidem 😩");
+      return;
+    } else {
+      setPasswordDontMatch(false);
+    }
 
-        if(password !== passwordConfirmation) {
-            setPasswordDontMatch(true);
-            showToast.show({
-                type: 'error',
-                position: 'top',
-                text1: 'Erro',
-                text2: 'Suas senhas não coincidem 😔',
-                visibilityTime: 4000,
-                autoHide: true,
-                topOffset: 30,
-            });
-        } else {
-            setPasswordDontMatch(false);
-        };
-    };
+    const response = await request.post("/signup", {
+      name,
+      email,
+      password,
+      passwordConfirmation,
+    });
+    console.log(response);
+  };
 
   return (
     <SafeAreaView>
@@ -90,7 +83,7 @@ const CreateAccount: React.FC = () => {
               <TextInput
                 style={{
                   ...styles.formInput,
-                  borderBottomColor: emailInvalid
+                  borderBottomColor: invalidEmail
                     ? "#E83F5B"
                     : styles.formInput["borderBottomColor"],
                 }}
