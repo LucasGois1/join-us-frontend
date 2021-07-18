@@ -132,27 +132,25 @@ const CreateAccount: React.FC = () => {
                 secureTextEntry={true}
               />
             </View>
-
-            <View style={styles.haveAccountContainer}>
-              <TouchableOpacity
-                style={styles.haveAccountButton}
-                onPress={() => handleNextPage("Login")}
-              >
-                <Text style={styles.haveAccountText}>Já tenho uma conta</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.buttonContainer}>
-              <GreenButton
-                style={styles.button}
-                active={true}
-                title="Criar conta"
-                onPress={handleSubmitUser}
-              />
-            </View>
           </View>
         </View>
       </KeyboardAvoidingView>
+      <View style={styles.haveAccountContainer}>
+        <TouchableOpacity
+          style={styles.haveAccountButton}
+          onPress={() => handleNextPage("Login")}
+        >
+          <Text style={styles.haveAccountText}>Já tenho uma conta</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        <GreenButton
+          style={styles.button}
+          active={true}
+          title="Criar conta"
+          onPress={handleSubmitUser}
+        />
+      </View>
     </SafeAreaView>
   );
 };
