@@ -8,6 +8,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 import styles from './styles';
 
@@ -29,11 +30,34 @@ const CreateAccount: React.FC = () => {
     };
 
     const handleSubmitUser = () => {
+        let showToast: any = Toast;
+
+        if(!email) {
+            showToast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Erro',
+                text2: 'Você precisa digitar seu email 😔',
+                visibilityTime: 4000,
+                autoHide: true,
+                topOffset: 30,
+              });
+        };
+
         if(password !== passwordConfirmation) {
             setPasswordDontMatch(true);
+            showToast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Erro',
+                text2: 'Suas senhas não coincidem 😔',
+                visibilityTime: 4000,
+                autoHide: true,
+                topOffset: 30,
+            });
         } else {
             setPasswordDontMatch(false);
-        }
+        };
     };
 
     return (
