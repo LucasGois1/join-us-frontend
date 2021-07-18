@@ -22,4 +22,4 @@ Feito em React Native (Expo) com uso de algumas libs para facilitar o processo.
 
 ### Print das telas
 
-![](./src/assets/pagePrints/CriarConta.png)
+![](https://ibb.co/vHq1m2v)
