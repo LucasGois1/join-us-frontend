@@ -3,7 +3,6 @@ import {
     Text, 
     View, 
     SafeAreaView,
-    FlatList
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
