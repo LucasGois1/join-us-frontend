@@ -43,7 +43,7 @@ const CreateAccount: React.FC = () => {
                 visibilityTime: 4000,
                 autoHide: true,
                 topOffset: 30,
-              });
+            });
         };
 
         if(password !== passwordConfirmation) {
