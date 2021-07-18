@@ -19,3 +19,7 @@ Feito em React Native (Expo) com uso de algumas libs para facilitar o processo.
 6. Uso de Toasts (avisos de erro e sucesso);
 7. Mudar senha de usuário, email e nome;
 8. Upload de fotos da biblioteca de fotos;
+
+### Print das telas
+
+1. !['/src/assets/pagePrints/Splash.png']
