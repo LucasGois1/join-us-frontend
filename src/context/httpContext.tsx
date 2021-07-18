@@ -1,60 +1,51 @@
 import React, { useState, createContext } from "react";
 import axios from "axios";
 
-export const HttpContext = createContext(null);
-export const RequestStorage = ({ children }) => {
-  const baseUrl = "http://localhost:5000/api";
+interface HttpMethods {
+  baseUrl: string;
+  get(route: string, token?: string): Promise<any>;
+  post(route: string, data: any, token?: string): Promise<any>;
+  put(route: string, data: any, token?: string): Promise<any>;
+  delete(route: string, data: any, token?: string): Promise<any>;
+}
+export const HttpContext = createContext<HttpMethods>({} as HttpMethods);
+export const RequestStorage: React.FC = ({ children }) => {
+  class Methods implements HttpMethods {
+    baseUrl: string = "http://localhost:5000/api";
 
-  const methods = {
-    get: async (route: string, token?: string) => {
-      return await axios.get(`${baseUrl}${route}`, {
+    async get(route: string, token?: string): Promise<any> {
+      return await axios.get(`${this.baseUrl}${route}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : null,
         },
       });
-    },
-    post: async (route: string, data: any, token?: string) => {
-      return await axios.post(
-        `${baseUrl}${route}`,
-        {
-          data: data,
+    }
+    async post(route: string, data: any, token?: string): Promise<any> {
+      return await axios.post(`${this.baseUrl}${route}`, data, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : null,
         },
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : null,
-          },
-        }
-      );
-    },
-    put: async (route: string, data: any, token?: string) => {
-      return await axios.post(
-        `${baseUrl}${route}`,
-        {
-          data: data,
+      });
+    }
+    async put(route: string, data: any, token?: string): Promise<any> {
+      return await axios.post(`${this.baseUrl}${route}`, data, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : null,
         },
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : null,
-          },
-        }
-      );
-    },
-    delete: async (route: string, data: any, token?: string) => {
-      return await axios.post(
-        `${baseUrl}${route}`,
-        {
-          data: data,
+      });
+    }
+    async delete(route: string, data: any, token?: string): Promise<any> {
+      return await axios.post(`${this.baseUrl}${route}`, data, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : null,
         },
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : null,
-          },
-        }
-      );
-    },
-  };
+      });
+    }
+  }
 
   return (
-    <HttpContext.Provider value={methods}>{children}</HttpContext.Provider>
+    <HttpContext.Provider value={new Methods()}>
+      {children}
+    </HttpContext.Provider>
   );
 };
