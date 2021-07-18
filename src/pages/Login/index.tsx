@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -8,11 +7,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Toast from "react-native-toast-message";
+
+import { useNavigation } from "@react-navigation/native";
+
 import GreenButton from "../../components/GreenButton";
 import LogoImage from "../../components/LogoImage";
-import { HttpContext } from "../../context/httpContext";
+
 import useNotification from "../../hooks/useNotification";
+import { HttpContext } from "../../context/httpContext";
+
 import styles from "./styles";
 
 const Login: React.FC = () => {
@@ -23,7 +26,7 @@ const Login: React.FC = () => {
 
   const navigation = useNavigation();
 
-  const request = useContext(HttpContext);
+  const request: any = useContext(HttpContext);
 
   const handleNextPage = (screenTitle: string) => {
     navigation.navigate(screenTitle);
@@ -112,7 +115,7 @@ const Login: React.FC = () => {
               <GreenButton
                 style={styles.button}
                 active={true}
-                title="Criar conta"
+                title="Entrar"
                 onPress={handleSubmitUser}
               />
             </View>

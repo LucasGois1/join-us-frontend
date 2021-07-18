@@ -24,6 +24,7 @@ const CreateAccount: React.FC = () => {
   const [passwordConfirmation, onPasswordConfirmationChange] = useState("");
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [passwordDontMatch, setPasswordDontMatch] = useState(false);
+  const [invalidName, setInvalidName] = useState(false);
   const request = useContext(HttpContext);
 
   const navigation = useNavigation();
@@ -33,14 +34,20 @@ const CreateAccount: React.FC = () => {
   };
 
   const handleSubmitUser = async () => {
+    if(!name) {
+      setInvalidName(true);
+      useNotification("error", "Ops!", "Você precisa colocar um nome! 😅");
+      return;
+    }
+
     if (!email) {
       setInvalidEmail(true);
-      useNotification("error", "Ops!", "Você precisa inserir um e-mail 😅");
+      useNotification("error", "Ops!", "Você precisa inserir um e-mail! 😅");
       return;
     }
 
     if (password !== passwordConfirmation) {
-      useNotification("error", "Ops!", "Suas senhas não coincidem 😩");
+      useNotification("error", "Ops!", "Suas senhas não coincidem! 😩");
       return;
     } else {
       setPasswordDontMatch(false);
@@ -72,7 +79,12 @@ const CreateAccount: React.FC = () => {
           <View style={styles.formContainer}>
             <View>
               <TextInput
-                style={styles.formInput}
+                style={{
+                  ...styles.formInput,
+                  borderBottomColor: invalidName 
+                    ? "#E83F5B"
+                    : styles.formInput["borderBottomColor"],
+                }}
                 placeholderTextColor="#5C6660"
                 placeholder="Digite seu nome"
                 onChangeText={onNameChange}

@@ -13,18 +13,18 @@ Feito em React Native (Expo) com uso de algumas libs para facilitar o processo.
 
 ### Principais features
 
-[x] OnBoarding (tela de apresentação do projeto);
-[] Login com uso de biometria ou FaceId;
-[] Uso do localStorage no celular;
-[] Compartilhamento de eventos;
-[] Animações;
-[] Dropdowns e modais;
-[x] Uso de Toasts (avisos de erro e sucesso);
-[] Mudar senha de usuário, email e nome;
-[] Upload de fotos da biblioteca de imagens;
-[] Renderização de rotas apenas com autorização (AuthGuard);
-[x] Validação de formulários;
-[] Puxar para baixo para recarregar a página;
-[] Animações de carregamento;
-[] Sistema de geolocalização de ruas;
-[] Sistema de notificações;
+- [x] OnBoarding (tela de apresentação do projeto);
+- [] Login com uso de biometria ou FaceId;
+- [] Uso do localStorage no celular;
+- [] Compartilhamento de eventos;
+- [] Animações;
+- [] Dropdowns e modais;
+- [x] Uso de Toasts (avisos de erro e sucesso);
+- [] Mudar senha de usuário, email e nome;
+- [] Upload de fotos da biblioteca de imagens;
+- [] Renderização de rotas apenas com autorização (AuthGuard);
+- [x] Validação de formulários;
+- [] Puxar para baixo para recarregar a página;
+- [] Animações de carregamento;
+- [] Sistema de geolocalização de ruas;
+- [] Sistema de notificações;

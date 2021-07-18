@@ -1,6 +1,6 @@
-import React, { useState, createContext } from "react";
+import React, { createContext } from "react";
 import axios from "axios";
-
+  
 interface HttpMethods {
   baseUrl: string;
   get(route: string, token?: string): Promise<any>;
@@ -8,7 +8,9 @@ interface HttpMethods {
   put(route: string, data: any, token?: string): Promise<any>;
   delete(route: string, data: any, token?: string): Promise<any>;
 }
+
 export const HttpContext = createContext<HttpMethods>({} as HttpMethods);
+
 export const RequestStorage: React.FC = ({ children }) => {
   class Methods implements HttpMethods {
     baseUrl: string = "http://localhost:5000/api";
@@ -20,6 +22,7 @@ export const RequestStorage: React.FC = ({ children }) => {
         },
       });
     }
+
     async post(route: string, data: any, token?: string): Promise<any> {
       return await axios.post(`${this.baseUrl}${route}`, data, {
         headers: {
@@ -27,6 +30,7 @@ export const RequestStorage: React.FC = ({ children }) => {
         },
       });
     }
+
     async put(route: string, data: any, token?: string): Promise<any> {
       return await axios.post(`${this.baseUrl}${route}`, data, {
         headers: {
@@ -41,6 +45,7 @@ export const RequestStorage: React.FC = ({ children }) => {
         },
       });
     }
+    
   }
 
   return (
