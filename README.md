@@ -22,4 +22,4 @@ Feito em React Native (Expo) com uso de algumas libs para facilitar o processo.
 
 ### Print das telas
 
-1. !['/src/assets/pagePrints/Splash.png']
+1. ![/src/assets/pagePrints/Splash.png]
