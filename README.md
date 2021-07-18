@@ -20,8 +20,4 @@ Feito em React Native (Expo) com uso de algumas libs para facilitar o processo.
 7. Mudar senha de usuário, email e nome;
 8. Upload de fotos da biblioteca de fotos;
 
-### Print das telas
-
 ![](https://ibb.co/vHq1m2v)
-
-teste
