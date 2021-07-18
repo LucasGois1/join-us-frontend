@@ -23,3 +23,5 @@ Feito em React Native (Expo) com uso de algumas libs para facilitar o processo.
 ### Print das telas
 
 ![](https://ibb.co/vHq1m2v)
+
+teste
