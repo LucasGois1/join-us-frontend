@@ -2,10 +2,12 @@ import { StyleSheet } from 'react-native';
 import colors from '../../styles/colors';
 
 const styles = StyleSheet.create({
+    scrollViewContainer: {
+        height: '100%',
+        justifyContent: 'space-between',
+    },
     container: {
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        paddingHorizontal: 30
+        paddingHorizontal: 30,
     },
     imageContainer: {
         marginTop: 20,
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     formContainer: {
-        width: '100%'
+        width: '100%',
     },
     formInput: {
         width: '100%',

@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Toast from "react-native-toast-message";
 
 import styles from "./styles";
 
@@ -23,10 +22,11 @@ const CreateAccount: React.FC = () => {
   const [email, onEmailChange] = useState<string>("");
   const [password, onPasswordChange] = useState<string>("");
   const [passwordConfirmation, onPasswordConfirmationChange] = useState<string>("");
-  const [invalidEmail, setInvalidEmail] = useState<Boolean>(false);
-  const [invalidPassword, setInvalidPassword] = useState<Boolean>(false);
-  const [passwordDontMatch, setPasswordDontMatch] = useState<Boolean>(false);
-  const [invalidName, setInvalidName] = useState<Boolean>(false);
+  const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
+  const [invalidPassword, setInvalidPassword] = useState<boolean>(false);
+  const [passwordDontMatch, setPasswordDontMatch] = useState<boolean>(false);
+  const [invalidName, setInvalidName] = useState<boolean>(false);
+  const [showLoadingSpin, setShowLoadingSpin] = useState<boolean>(false);
   const request = useContext(HttpContext);
 
   const navigation = useNavigation();
@@ -75,6 +75,8 @@ const CreateAccount: React.FC = () => {
       setPasswordDontMatch(false);
     }
 
+    setShowLoadingSpin(true);
+
     const response = await request.post("/signup", {
       name,
       email,
@@ -82,11 +84,13 @@ const CreateAccount: React.FC = () => {
       passwordConfirmation,
     });
 
+    setShowLoadingSpin(false);
+
   };
 
   return (
     <SafeAreaView>
-      <ScrollView style={{paddingBottom: 100}}>
+      <ScrollView style={{paddingBottom: 100}} contentContainerStyle={styles.scrollViewContainer}>
         <KeyboardAvoidingView
           style={{ marginTop: 30 }}
           behavior="position"
@@ -178,6 +182,7 @@ const CreateAccount: React.FC = () => {
           active={true}
           title="Criar conta"
           onPress={handleSubmitUser}
+          showLoading={showLoadingSpin}
         />
       </View>
       </ScrollView>
