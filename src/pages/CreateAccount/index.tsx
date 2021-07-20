@@ -40,51 +40,48 @@ const CreateAccount: React.FC = () => {
       setInvalidName(true);
       useNotification("error", "Ops!", "Você precisa colocar um nome! 😅");
       return;
-    } else {
-      setInvalidName(false);
-    }
+    } else setInvalidName(false);
 
     if (!email) {
       setInvalidEmail(true);
       useNotification("error", "Ops!", "Você precisa inserir um e-mail! 😣");
       return;
-    } else {
-      setInvalidEmail(false);
-    }
+    } else setInvalidEmail(false);
 
     if(!password) {
       useNotification("error", "Ops!", "Você precisa criar uma senha! 🤓");
       setInvalidPassword(true);
       return
-    } else {
-      setInvalidPassword(false);
-    }
+    } else setInvalidPassword(false);
 
     if(!passwordConfirmation) {
       useNotification("error", "Ops!", "Você precisa confirmar sua senha! 😕");
       setPasswordDontMatch(true);
       return
-    } else {
-      setPasswordDontMatch(false);
-    }
+    } else setPasswordDontMatch(false);
 
     if (password !== passwordConfirmation) {
       useNotification("error", "Ops!", "Suas senhas não coincidem! 😩");
       return;
-    } else {
-      setPasswordDontMatch(false);
-    }
+    } else setPasswordDontMatch(false);
 
     setShowLoadingSpin(true);
 
-    const response = await request.post("/signup", {
-      name,
-      email,
-      password,
-      passwordConfirmation,
-    });
+    let response;
 
-    setShowLoadingSpin(false);
+    try {
+      response = await request.post("/signup", {
+        name,
+        email,
+        password,
+        passwordConfirmation,
+      });
+      useNotification('error', 'Parabéns! 🥳', 'Sua conta foi criada com sucesso!');
+      setShowLoadingSpin(false);
+    } catch (error) {
+      setShowLoadingSpin(false);
+      useNotification('error', 'Um erro inesperado aconteceu! 🙁', error);
+    };
 
   };
 
