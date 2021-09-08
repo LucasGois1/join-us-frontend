@@ -15,8 +15,8 @@ import GreenButton from "../../components/atoms/GreenButton";
 import { HttpContext } from "../../context/httpContext";
 import useToast from "../../hooks/useToast";
 import { ScrollView } from "react-native-gesture-handler";
-import { SignupStepOne } from "../../components/molecules";
-import SignupStepTwo from './../../components/molecules/SignupStepTwo/index';
+import { SignupStepOne, SignupStepTwo } from "../../components/molecules";
+import Wizard from './../../components/organisms/Wizard/index';
 
 const CreateAccount: React.FC = () => {
   const [name, onNameChange] = useState<string>("");
@@ -28,6 +28,7 @@ const CreateAccount: React.FC = () => {
   const [passwordDontMatch, setPasswordDontMatch] = useState<boolean>(false);
   const [invalidName, setInvalidName] = useState<boolean>(false);
   const [showLoadingSpin, setShowLoadingSpin] = useState<boolean>(false);
+  const [wizardController, setWizardController] = useState([{index: 0, active: true}, {index: 1, active: false}]);
   
   const request = useContext(HttpContext);
 
@@ -98,24 +99,26 @@ const CreateAccount: React.FC = () => {
             <View style={styles.titleContainer}>
               <Text style={styles.titleText}>Join Us!</Text>
             </View>
-            <View style={styles.formContainer}>
-              <SignupStepOne 
-                name={name}
-                invalidName={invalidName}
-                onNameChange={onNameChange}
-                email={email}
-                invalidEmail={invalidEmail}
-                onEmailChange={onEmailChange}
-              />
-              {/* <SignupStepTwo 
-                password={password}
-                invalidPassword={invalidPassword}
-                onPasswordChange={onPasswordChange}
-                confirmPassword={passwordConfirmation}
-                onConfirmPasswordChange={onPasswordConfirmationChange}
-                invalidConfirmPassword={passwordDontMatch}
-              /> */}
-            </View>
+            <Wizard dotsStructure={wizardController}>
+              <View style={styles.formContainer}>
+                <SignupStepOne
+                  name={name}
+                  invalidName={invalidName}
+                  onNameChange={onNameChange}
+                  email={email}
+                  invalidEmail={invalidEmail}
+                  onEmailChange={onEmailChange}
+                />
+                {/* <SignupStepTwo 
+                  password={password}
+                  invalidPassword={invalidPassword}
+                  onPasswordChange={onPasswordChange}
+                  confirmPassword={passwordConfirmation}
+                  onConfirmPasswordChange={onPasswordConfirmationChange}
+                  invalidConfirmPassword={passwordDontMatch}
+                /> */}
+              </View>
+            </Wizard>
           </View>
         </KeyboardAvoidingView>
         <View style={styles.haveAccountContainer}>
