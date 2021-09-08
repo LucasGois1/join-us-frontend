@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import styles from "./styles";
+import styles, { ImageContainer, Title, TitleContainer, FormContainer, HaveAccountContainer, HaveAccountButton, HaveAccountText, ButtonContainer, BottomBar } from "./styles";
+import { Container } from './styles';
 
 import LogoImage from "../../components/atoms/LogoImage";
 import GreenButton from "../../components/atoms/GreenButton";
@@ -29,6 +30,7 @@ const CreateAccount: React.FC = () => {
   const [invalidName, setInvalidName] = useState<boolean>(false);
   const [showLoadingSpin, setShowLoadingSpin] = useState<boolean>(false);
   const [wizardController, setWizardController] = useState([{index: 0, active: true}, {index: 1, active: false}]);
+  const [stepOneIsShowing, setStepOneIsShowing] = useState(true);
   
   const request = useContext(HttpContext);
 
@@ -36,36 +38,7 @@ const CreateAccount: React.FC = () => {
 
   const handleNextPage = (screenTitle: string) => navigation.navigate(screenTitle);
 
-  const handleSubmitUser = async () => {
-    if(!name) {
-      setInvalidName(true);
-      useToast("error", "Ops!", "Você precisa colocar um nome! 😅");
-      return;
-    } else setInvalidName(false);
-
-    if (!email) {
-      setInvalidEmail(true);
-      useToast("error", "Ops!", "Você precisa inserir um e-mail! 😣");
-      return;
-    } else setInvalidEmail(false);
-
-    if(!password) {
-      useToast("error", "Ops!", "Você precisa criar uma senha! 🤓");
-      setInvalidPassword(true);
-      return
-    } else setInvalidPassword(false);
-
-    if(!passwordConfirmation) {
-      useToast("error", "Ops!", "Você precisa confirmar sua senha! 😕");
-      setPasswordDontMatch(true);
-      return
-    } else setPasswordDontMatch(false);
-
-    if (password !== passwordConfirmation) {
-      useToast("error", "Ops!", "Suas senhas não coincidem! 😩");
-      return;
-    } else setPasswordDontMatch(false);
-
+  const createUser = async () => {
     setShowLoadingSpin(true);
 
     try {
@@ -81,6 +54,53 @@ const CreateAccount: React.FC = () => {
     } finally {
       setShowLoadingSpin(false);
     };
+  }
+
+  const handleSubmitUser = () => {
+    if(stepOneIsShowing) {
+      if(!name) {
+        setInvalidName(true);
+        useToast("error", "Ops!", "Você precisa colocar um nome! 😅");
+        return;
+      } else setInvalidName(false);
+  
+      if (!email) {
+        setInvalidEmail(true);
+        useToast("error", "Ops!", "Você precisa inserir um e-mail! 😣");
+        return;
+      } else {
+        if(!email.includes('@')) {
+          useToast("error", "Ops!", "Você precisa inserir um e-mail válido! 😣");
+          return;
+        } else {
+          setInvalidEmail(false)
+        };
+      };
+
+      setStepOneIsShowing(false);
+
+      wizardController[0].active = false;
+      wizardController[1].active = true;
+    } else {
+      if(!password) {
+        useToast("error", "Ops!", "Você precisa criar uma senha! 🤓");
+        setInvalidPassword(true);
+        return;
+      } else setInvalidPassword(false);
+  
+      if(!passwordConfirmation) {
+        useToast("error", "Ops!", "Você precisa confirmar sua senha! 😕");
+        setPasswordDontMatch(true);
+        return;
+      } else setPasswordDontMatch(false);
+  
+      if (password !== passwordConfirmation) {
+        useToast("error", "Ops!", "Suas senhas não coincidem! 😩");
+        return;
+      } else setPasswordDontMatch(false);
+
+      createUser();
+    };
 
   };
 
@@ -92,49 +112,66 @@ const CreateAccount: React.FC = () => {
           behavior="position"
           enabled
         >
-          <View style={styles.container}>
-            <View style={styles.imageContainer}>
+          <Container>
+
+            <ImageContainer>
               <LogoImage />
-            </View>
-            <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>Join Us!</Text>
-            </View>
+            </ImageContainer>
+
+            <TitleContainer>
+              <Title>Join Us!</Title>
+            </TitleContainer>
+
             <Wizard dotsStructure={wizardController}>
-              <View style={styles.formContainer}>
-                <SignupStepOne
-                  name={name}
-                  invalidName={invalidName}
-                  onNameChange={onNameChange}
-                  email={email}
-                  invalidEmail={invalidEmail}
-                  onEmailChange={onEmailChange}
-                />
-                {/* <SignupStepTwo 
-                  password={password}
-                  invalidPassword={invalidPassword}
-                  onPasswordChange={onPasswordChange}
-                  confirmPassword={passwordConfirmation}
-                  onConfirmPasswordChange={onPasswordConfirmationChange}
-                  invalidConfirmPassword={passwordDontMatch}
-                /> */}
-              </View>
+              <FormContainer>
+                {
+                  stepOneIsShowing ? (
+                    <SignupStepOne
+                      name={name}
+                      invalidName={invalidName}
+                      onNameChange={onNameChange}
+                      email={email}
+                      invalidEmail={invalidEmail}
+                      onEmailChange={onEmailChange}
+                    />
+                  ) : (
+                    <SignupStepTwo
+                      password={password}
+                      invalidPassword={invalidPassword}
+                      onPasswordChange={onPasswordChange}
+                      confirmPassword={passwordConfirmation}
+                      onConfirmPasswordChange={onPasswordConfirmationChange}
+                      invalidConfirmPassword={passwordDontMatch}
+                    />
+                  )
+                }
+              </FormContainer>
             </Wizard>
-          </View>
+          </Container>
         </KeyboardAvoidingView>
-        <View style={styles.haveAccountContainer}>
-          <TouchableOpacity style={styles.haveAccountButton} onPress={() => handleNextPage("Login")}>
-            <Text style={styles.haveAccountText}>Já tenho uma conta</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.buttonContainer}>
-        <GreenButton
-          style={styles.button}
-          active={true}
-          title="Criar conta"
-          onPress={handleSubmitUser}
-          isLoading={showLoadingSpin}
-        />
-      </View>
+
+        <BottomBar>
+          <HaveAccountContainer>
+            <HaveAccountButton onPress={() => handleNextPage("Login")}>
+              <HaveAccountText>Já tenho uma conta</HaveAccountText>
+            </HaveAccountButton>
+
+          </HaveAccountContainer>
+
+          <ButtonContainer>
+            <GreenButton
+              style={stepOneIsShowing ? styles.alternativeButton : styles.button}
+              activeIcon={stepOneIsShowing}
+              active
+              title="Criar conta"
+              onPress={handleSubmitUser}
+              isLoading={showLoadingSpin}
+            />
+          </ButtonContainer>
+        </BottomBar>
+
+
+
       </ScrollView>
     </SafeAreaView>
   );

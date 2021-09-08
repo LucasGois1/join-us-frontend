@@ -2,19 +2,12 @@ import React from 'react';
 import { 
     TouchableOpacity, 
     Text, 
-    TouchableOpacityProps ,
     ActivityIndicator
 } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 import colors from '../../../styles/colors';
-
-interface ButtonsProps extends TouchableOpacityProps {
-    activeIcon?: boolean;
-    title?: string;
-    isLoading?: boolean;
-    active: boolean;
-}
+import { ButtonsProps } from './types';
 
 const GreenButton = ({ activeIcon, title, active, isLoading, ...rest }: ButtonsProps) => {
 
