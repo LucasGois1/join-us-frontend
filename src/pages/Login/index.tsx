@@ -10,10 +10,10 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 
-import GreenButton from "../../components/GreenButton";
-import LogoImage from "../../components/LogoImage";
+import GreenButton from "../../components/atoms/GreenButton";
+import LogoImage from "../../components/atoms/LogoImage";
 
-import useNotification from "../../hooks/useNotification";
+import useToast from "../../hooks/useToast";
 import { HttpContext } from "../../context/httpContext";
 
 import styles from "./styles";
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
   const handleSubmitUser = async () => {
     if (!email) {
       setInvalidEmail(true);
-      useNotification("error", "Ops!", "Você precisa inserir um e-mail 😅");
+      useToast("error", "Ops!", "Você precisa inserir um e-mail 😅");
       return;
     } else {
       setInvalidEmail(false);
@@ -43,7 +43,7 @@ const Login: React.FC = () => {
 
     if (!password) {
       setInvalidPassword(true);
-      useNotification("error", "Ops!", "Você precisa inserir uma senha 😅");
+      useToast("error", "Ops!", "Você precisa inserir uma senha 😅");
       return;
     } else {
       setInvalidPassword(false);

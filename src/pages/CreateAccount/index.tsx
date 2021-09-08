@@ -4,18 +4,19 @@ import {
   KeyboardAvoidingView,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import styles from "./styles";
 
-import LogoImage from "../../components/LogoImage";
-import GreenButton from "../../components/GreenButton";
+import LogoImage from "../../components/atoms/LogoImage";
+import GreenButton from "../../components/atoms/GreenButton";
 import { HttpContext } from "../../context/httpContext";
-import useNotification from "../../hooks/useNotification";
+import useToast from "../../hooks/useToast";
 import { ScrollView } from "react-native-gesture-handler";
+import { SignupStepOne } from "../../components/molecules";
+import SignupStepTwo from './../../components/molecules/SignupStepTwo/index';
 
 const CreateAccount: React.FC = () => {
   const [name, onNameChange] = useState<string>("");
@@ -27,60 +28,57 @@ const CreateAccount: React.FC = () => {
   const [passwordDontMatch, setPasswordDontMatch] = useState<boolean>(false);
   const [invalidName, setInvalidName] = useState<boolean>(false);
   const [showLoadingSpin, setShowLoadingSpin] = useState<boolean>(false);
+  
   const request = useContext(HttpContext);
 
   const navigation = useNavigation();
 
-  const handleNextPage = (screenTitle: string) => {
-    navigation.navigate(screenTitle);
-  };
+  const handleNextPage = (screenTitle: string) => navigation.navigate(screenTitle);
 
   const handleSubmitUser = async () => {
     if(!name) {
       setInvalidName(true);
-      useNotification("error", "Ops!", "Você precisa colocar um nome! 😅");
+      useToast("error", "Ops!", "Você precisa colocar um nome! 😅");
       return;
     } else setInvalidName(false);
 
     if (!email) {
       setInvalidEmail(true);
-      useNotification("error", "Ops!", "Você precisa inserir um e-mail! 😣");
+      useToast("error", "Ops!", "Você precisa inserir um e-mail! 😣");
       return;
     } else setInvalidEmail(false);
 
     if(!password) {
-      useNotification("error", "Ops!", "Você precisa criar uma senha! 🤓");
+      useToast("error", "Ops!", "Você precisa criar uma senha! 🤓");
       setInvalidPassword(true);
       return
     } else setInvalidPassword(false);
 
     if(!passwordConfirmation) {
-      useNotification("error", "Ops!", "Você precisa confirmar sua senha! 😕");
+      useToast("error", "Ops!", "Você precisa confirmar sua senha! 😕");
       setPasswordDontMatch(true);
       return
     } else setPasswordDontMatch(false);
 
     if (password !== passwordConfirmation) {
-      useNotification("error", "Ops!", "Suas senhas não coincidem! 😩");
+      useToast("error", "Ops!", "Suas senhas não coincidem! 😩");
       return;
     } else setPasswordDontMatch(false);
 
     setShowLoadingSpin(true);
 
-    let response;
-
     try {
-      response = await request.post("/signup", {
+      await request.post("/signup", {
         name,
         email,
         password,
         passwordConfirmation,
       });
-      useNotification('error', 'Parabéns! 🥳', 'Sua conta foi criada com sucesso!');
+      useToast('error', 'Parabéns! 🥳', 'Sua conta foi criada com sucesso!');
+    } catch (error: any) {
+      useToast('error', 'Um erro inesperado aconteceu! 🙁', error.message);
+    } finally {
       setShowLoadingSpin(false);
-    } catch (error) {
-      setShowLoadingSpin(false);
-      useNotification('error', 'Um erro inesperado aconteceu! 🙁', error);
     };
 
   };
@@ -101,70 +99,22 @@ const CreateAccount: React.FC = () => {
               <Text style={styles.titleText}>Join Us!</Text>
             </View>
             <View style={styles.formContainer}>
-              <View>
-                <TextInput
-                  style={{
-                    ...styles.formInput,
-                    borderBottomColor: invalidName 
-                      ? "#E83F5B"
-                      : styles.formInput["borderBottomColor"],
-                  }}
-                  placeholderTextColor="#5C6660"
-                  placeholder="Digite seu nome"
-                  onChangeText={onNameChange}
-                  keyboardAppearance="light"
-                  value={name}
-                />
-              </View>
-              <View>
-                <TextInput
-                  style={{
-                    ...styles.formInput,
-                    borderBottomColor: invalidEmail
-                      ? "#E83F5B"
-                      : styles.formInput["borderBottomColor"],
-                  }}
-                  placeholderTextColor="#5C6660"
-                  keyboardType="email-address"
-                  placeholder="Digite seu melhor email"
-                  keyboardAppearance="light"
-                  onChangeText={onEmailChange}
-                  value={email}
-                />
-              </View>
-              <View>
-                <TextInput
-                  style={{ 
-                    ...styles.formInput,
-                    borderBottomColor: invalidPassword
-                    ? "#E83F5B"
-                    : styles.formInput["borderBottomColor"],
-                  }}
-                  placeholderTextColor="#5C6660"
-                  placeholder="Digite uma senha"
-                  keyboardAppearance="light"
-                  onChangeText={onPasswordChange}
-                  value={password}
-                  secureTextEntry={true}
-                />
-              </View>
-              <View>
-                <TextInput
-                  style={{
-                    ...styles.formInput,
-                    marginBottom: 20,
-                    borderBottomColor: passwordDontMatch
-                      ? "#E83F5B"
-                      : styles.formInput["borderBottomColor"],
-                  }}
-                  placeholderTextColor="#5C6660"
-                  keyboardAppearance="light"
-                  placeholder="Confirme sua senha"
-                  onChangeText={onPasswordConfirmationChange}
-                  value={passwordConfirmation}
-                  secureTextEntry={true}
-                />
-              </View>
+              <SignupStepOne 
+                name={name}
+                invalidName={invalidName}
+                onNameChange={onNameChange}
+                email={email}
+                invalidEmail={invalidEmail}
+                onEmailChange={onEmailChange}
+              />
+              {/* <SignupStepTwo 
+                password={password}
+                invalidPassword={invalidPassword}
+                onPasswordChange={onPasswordChange}
+                confirmPassword={passwordConfirmation}
+                onConfirmPasswordChange={onPasswordConfirmationChange}
+                invalidConfirmPassword={passwordDontMatch}
+              /> */}
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -179,7 +129,7 @@ const CreateAccount: React.FC = () => {
           active={true}
           title="Criar conta"
           onPress={handleSubmitUser}
-          showLoading={showLoadingSpin}
+          isLoading={showLoadingSpin}
         />
       </View>
       </ScrollView>

@@ -5,6 +5,7 @@ export default {
     white: '#FFFFFF',
     dark_white: '#CFCFCF',
     black: '#5C6660',
-    gray: '#5C6660'
+    gray: '#5C6660',
+    red: '#E83F5B'
   };
   

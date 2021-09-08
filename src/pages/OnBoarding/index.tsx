@@ -9,15 +9,12 @@ import { useNavigation } from '@react-navigation/core';
 
 import styles from './styles';
 
-import LogoImage from '../../components/LogoImage';
-import GreenButton from '../../components/GreenButton';
+import { LogoImage, GreenButton } from '../../components/atoms/index';
 
 const OnBoarding: React.FC = () => {
     const navigation = useNavigation();
 
-    const handleNextPage = () => {
-        navigation.navigate('CreateAccount');
-    };
+    const handleNextPage = () => navigation.navigate('CreateAccount');
 
     return (
        <SafeAreaView style={{flex: 1}}>

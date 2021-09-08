@@ -7,16 +7,16 @@ import {
 } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
-import colors from '../../styles/colors';
+import colors from '../../../styles/colors';
 
 interface ButtonsProps extends TouchableOpacityProps {
     activeIcon?: boolean;
     title?: string;
-    showLoading?: boolean;
+    isLoading?: boolean;
     active: boolean;
 }
 
-const GreenButton = ({ activeIcon, title, active, showLoading, ...rest }: ButtonsProps) => {
+const GreenButton = ({ activeIcon, title, active, isLoading, ...rest }: ButtonsProps) => {
 
     return (
         <TouchableOpacity disabled={!active} {...rest}>
@@ -29,7 +29,7 @@ const GreenButton = ({ activeIcon, title, active, showLoading, ...rest }: Button
                     /> :
                     <Text style={{color: colors.white}}>
                         {
-                            showLoading ? <ActivityIndicator style={{marginTop: 5}} size="small" color={colors.green_dark} />
+                            isLoading ? <ActivityIndicator style={{marginTop: 5}} size="small" color={colors.green_dark} />
                             : title
                         }
                     </Text>
