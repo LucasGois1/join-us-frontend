@@ -126,8 +126,12 @@ const CreateAccount: React.FC = () => {
         return;
       };
     });
+
     i === 0 && setStepOneIsShowing(true);
-    i === 1 && setStepOneIsShowing(false);
+
+    if(i === 1 && name && email && email.includes('@')) {
+      setStepOneIsShowing(false);
+    };
   };
 
   return (
