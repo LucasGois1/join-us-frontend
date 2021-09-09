@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { SafeAreaView, KeyboardAvoidingView, ScrollView, Animated } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -12,7 +12,8 @@ import styles, {
   HaveAccountButton, 
   HaveAccountText, 
   ButtonContainer, 
-  BottomBar 
+  BottomBar, 
+  StepContainer
 } from "./styles";
 
 import { LogoImage, GreenButton } from "../../components/atoms";
@@ -36,8 +37,12 @@ const CreateAccount: React.FC = () => {
   const [invalidName, setInvalidName] = useState<boolean>(false);
   const [showLoadingSpin, setShowLoadingSpin] = useState<boolean>(false);
   const [stepOneIsShowing, setStepOneIsShowing] = useState<boolean>(true);
-  const [wizardController, setWizardController] = useState([{index: 0, active: true}, {index: 1, active: false}]);
+  const [wizardController] = useState([{index: 0, active: true}, {index: 1, active: false}]);
   const [opacity] = useState(new Animated.Value(0));
+  const [sendToRight] = useState(new Animated.Value(1000));
+  const [sendToLeftRight] = useState(new Animated.Value(-1000));
+  const [sendToLeft] = useState(new Animated.Value(0));
+  const [isGoing, setIsGoing] = useState(true);
 
   const handleNextPage = (screenTitle: string) => navigation.navigate(screenTitle);
 
@@ -80,7 +85,17 @@ const CreateAccount: React.FC = () => {
         };
       };
 
-      setStepOneIsShowing(false);
+      setTimeout(() => {
+        setStepOneIsShowing(false);
+      }, 200);
+
+      setIsGoing(true);
+
+      animateWizard(true, false);
+
+      setTimeout(() => {
+        animateWizard(false, false);
+      }, 200);
 
       wizardController[0].active = false;
       wizardController[1].active = true;
@@ -107,19 +122,9 @@ const CreateAccount: React.FC = () => {
 
   };
 
-  const fadeIn = () => {
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 1500,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  fadeIn();
-
-  const changePageWithDots = (i: number) => {
+  const changePageWithDots = (dotNumber: number) => {
     wizardController.map((element, index) => {
-      if(i === index) {
+      if(dotNumber === index) {
         element.active = true;
       } else {
         element.active = false;
@@ -127,12 +132,40 @@ const CreateAccount: React.FC = () => {
       };
     });
 
-    i === 0 && setStepOneIsShowing(true);
+    if(dotNumber === 0) {
+      setTimeout(() => setStepOneIsShowing(true), 200);
+      setIsGoing(false);
+      animateWizard(false, true);
+    };
 
-    if(i === 1 && name && email && email.includes('@')) {
+    if(dotNumber === 1 && name && email && email.includes('@')) {
+      setIsGoing(true);
       setStepOneIsShowing(false);
+      animateWizard(false, false);
     };
   };
+
+  const animateWizard = (isStepOne: boolean, isBack: boolean) => {
+    if(!isBack) {
+      Animated.timing(isStepOne ? sendToLeft : sendToRight, {
+        toValue:isStepOne ? -1000 : 0,
+        duration: 500, 
+        useNativeDriver: true
+      }).start();
+    } else {
+      Animated.timing(sendToLeftRight, {
+        toValue: 0,
+        duration: 500, 
+        useNativeDriver: true
+      }).start();
+    };
+  };
+
+  Animated.timing(opacity, {
+    toValue: 1,
+    duration: 1500,
+    useNativeDriver: true,
+  }).start();
 
   return (
     <SafeAreaView>
@@ -152,30 +185,38 @@ const CreateAccount: React.FC = () => {
               <Title>Join Us!</Title>
             </TitleContainer>
 
-            <Wizard 
+            <Wizard
               dotsStructure={wizardController}
               selectDot={changePageWithDots}
             >
               <FormContainer>
                 {
                   stepOneIsShowing ? (
-                    <SignupStepOne
-                      name={name}
-                      invalidName={invalidName}
-                      onNameChange={onNameChange}
-                      email={email}
-                      invalidEmail={invalidEmail}
-                      onEmailChange={onEmailChange}
-                    />
+                    <StepContainer
+                      style={{ transform: [{translateX: isGoing ? sendToLeft : sendToLeftRight}] }}
+                    >
+                      <SignupStepOne
+                        name={name}
+                        invalidName={invalidName}
+                        onNameChange={onNameChange}
+                        email={email}
+                        invalidEmail={invalidEmail}
+                        onEmailChange={onEmailChange}
+                      />
+                    </StepContainer>
                   ) : (
-                    <SignupStepTwo
-                      password={password}
-                      invalidPassword={invalidPassword}
-                      onPasswordChange={onPasswordChange}
-                      confirmPassword={passwordConfirmation}
-                      onConfirmPasswordChange={onPasswordConfirmationChange}
-                      invalidConfirmPassword={passwordDontMatch}
-                    />
+                    <StepContainer
+                      style={{ transform: [{translateX: sendToRight}] }}
+                    >
+                      <SignupStepTwo
+                        password={password}
+                        invalidPassword={invalidPassword}
+                        onPasswordChange={onPasswordChange}
+                        confirmPassword={passwordConfirmation}
+                        onConfirmPasswordChange={onPasswordConfirmationChange}
+                        invalidConfirmPassword={passwordDontMatch}
+                      />
+                    </StepContainer>
                   )
                 }
               </FormContainer>
@@ -193,12 +234,12 @@ const CreateAccount: React.FC = () => {
 
           <ButtonContainer>
             <GreenButton
-              style={stepOneIsShowing ? styles.alternativeButton : styles.button}
-              activeIcon={stepOneIsShowing}
               active
               title="Criar conta"
-              onPress={handleSubmitUser}
               isLoading={showLoadingSpin}
+              onPress={handleSubmitUser}
+              activeIcon={stepOneIsShowing}
+              style={stepOneIsShowing ? styles.alternativeButton : styles.button}
             />
           </ButtonContainer>
         </BottomBar>

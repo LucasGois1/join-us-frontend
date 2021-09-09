@@ -7,7 +7,7 @@ import Routes from './src/routes';
 export default function App() {
   return (
     <Fragment>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <Routes />
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </Fragment>

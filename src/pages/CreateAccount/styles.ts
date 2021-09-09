@@ -28,6 +28,8 @@ export const FormContainer = styled.View`
     width: 100%;
 `;
 
+export const StepContainer = styled(Animated.View)``;
+
 export const HaveAccountContainer = styled.View`
     width: 100%;
     justify-content: center;
