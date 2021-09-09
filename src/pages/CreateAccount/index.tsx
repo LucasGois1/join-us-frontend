@@ -2,24 +2,34 @@ import React, { useContext, useState } from "react";
 import {
   SafeAreaView,
   KeyboardAvoidingView,
-  View,
-  Text,
-  TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
 
-import styles, { ImageContainer, Title, TitleContainer, FormContainer, HaveAccountContainer, HaveAccountButton, HaveAccountText, ButtonContainer, BottomBar } from "./styles";
-import { Container } from './styles';
+import styles, { 
+  Container,
+  ImageContainer, 
+  Title, 
+  TitleContainer, 
+  FormContainer, 
+  HaveAccountContainer, 
+  HaveAccountButton, 
+  HaveAccountText, 
+  ButtonContainer, 
+  BottomBar 
+} from "./styles";
 
-import LogoImage from "../../components/atoms/LogoImage";
-import GreenButton from "../../components/atoms/GreenButton";
+import { LogoImage, GreenButton } from "../../components/atoms";
+import { SignupStepOne, SignupStepTwo } from "../../components/molecules";
+import { Wizard } from './../../components/organisms';
+
 import { HttpContext } from "../../context/httpContext";
 import useToast from "../../hooks/useToast";
-import { ScrollView } from "react-native-gesture-handler";
-import { SignupStepOne, SignupStepTwo } from "../../components/molecules";
-import Wizard from './../../components/organisms/Wizard/index';
 
 const CreateAccount: React.FC = () => {
+  const request = useContext(HttpContext);
+  const navigation = useNavigation();
+
   const [name, onNameChange] = useState<string>("");
   const [email, onEmailChange] = useState<string>("");
   const [password, onPasswordChange] = useState<string>("");
@@ -29,12 +39,8 @@ const CreateAccount: React.FC = () => {
   const [passwordDontMatch, setPasswordDontMatch] = useState<boolean>(false);
   const [invalidName, setInvalidName] = useState<boolean>(false);
   const [showLoadingSpin, setShowLoadingSpin] = useState<boolean>(false);
-  const [wizardController, setWizardController] = useState([{index: 0, active: true}, {index: 1, active: false}]);
-  const [stepOneIsShowing, setStepOneIsShowing] = useState(true);
-  
-  const request = useContext(HttpContext);
-
-  const navigation = useNavigation();
+  const [stepOneIsShowing, setStepOneIsShowing] = useState<boolean>(true);
+  const [wizardController] = useState([{index: 0, active: true}, {index: 1, active: false}]);
 
   const handleNextPage = (screenTitle: string) => navigation.navigate(screenTitle);
 
@@ -169,8 +175,6 @@ const CreateAccount: React.FC = () => {
             />
           </ButtonContainer>
         </BottomBar>
-
-
 
       </ScrollView>
     </SafeAreaView>
