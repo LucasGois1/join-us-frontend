@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
 import styled from 'styled-components/native';
 import colors from '../../styles/colors';
 
@@ -10,9 +10,7 @@ export const Container = styled.View`
     height: 95%;
 `;
 
-export const ImageContainer = styled.View`
-
-`;
+export const ImageContainer = styled(Animated.View)``;
 
 export const TitleContainer = styled.View`
     justify-content: center;
@@ -46,7 +44,7 @@ export const HaveAccountText = styled.Text`
     text-align: center;
 `;
 
-export const ButtonContainer = styled.View`
+export const ButtonContainer = styled(Animated.View)`
     justify-content: center;
     align-items: center;
 `;

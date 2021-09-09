@@ -1,5 +1,6 @@
 export interface Wizardprops {
     dotsStructure: DotsType[];
+    selectDot(index: number): void;
 };
 
 interface DotsType {

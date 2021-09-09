@@ -1,5 +1,6 @@
 export interface WizardDotprops {
     dotsStructure: DotsType[];
+    click(index: number): void;
 };
 
 interface DotsType {

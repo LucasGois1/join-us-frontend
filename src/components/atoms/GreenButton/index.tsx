@@ -2,12 +2,12 @@ import React from 'react';
 import { 
     TouchableOpacity, 
     Text, 
-    ActivityIndicator
+    ActivityIndicator,
 } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
-import colors from '../../../styles/colors';
 import { ButtonsProps } from './types';
+import colors from '../../../styles/colors';
 
 const GreenButton = ({ activeIcon, title, active, isLoading, ...rest }: ButtonsProps) => {
 

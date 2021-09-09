@@ -1,10 +1,6 @@
 import React, { useContext, useState } from "react";
-import {
-  SafeAreaView,
-  KeyboardAvoidingView,
-} from "react-native";
+import { SafeAreaView, KeyboardAvoidingView, ScrollView, Animated } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView } from "react-native-gesture-handler";
 
 import styles, { 
   Container,
@@ -40,7 +36,8 @@ const CreateAccount: React.FC = () => {
   const [invalidName, setInvalidName] = useState<boolean>(false);
   const [showLoadingSpin, setShowLoadingSpin] = useState<boolean>(false);
   const [stepOneIsShowing, setStepOneIsShowing] = useState<boolean>(true);
-  const [wizardController] = useState([{index: 0, active: true}, {index: 1, active: false}]);
+  const [wizardController, setWizardController] = useState([{index: 0, active: true}, {index: 1, active: false}]);
+  const [opacity] = useState(new Animated.Value(0));
 
   const handleNextPage = (screenTitle: string) => navigation.navigate(screenTitle);
 
@@ -110,6 +107,29 @@ const CreateAccount: React.FC = () => {
 
   };
 
+  const fadeIn = () => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 1500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  fadeIn();
+
+  const changePageWithDots = (i: number) => {
+    wizardController.map((element, index) => {
+      if(i === index) {
+        element.active = true;
+      } else {
+        element.active = false;
+        return;
+      };
+    });
+    i === 0 && setStepOneIsShowing(true);
+    i === 1 && setStepOneIsShowing(false);
+  };
+
   return (
     <SafeAreaView>
       <ScrollView style={{paddingBottom: 100}} contentContainerStyle={styles.scrollViewContainer}>
@@ -120,7 +140,7 @@ const CreateAccount: React.FC = () => {
         >
           <Container>
 
-            <ImageContainer>
+            <ImageContainer style={{ opacity }}>
               <LogoImage />
             </ImageContainer>
 
@@ -128,7 +148,10 @@ const CreateAccount: React.FC = () => {
               <Title>Join Us!</Title>
             </TitleContainer>
 
-            <Wizard dotsStructure={wizardController}>
+            <Wizard 
+              dotsStructure={wizardController}
+              selectDot={changePageWithDots}
+            >
               <FormContainer>
                 {
                   stepOneIsShowing ? (

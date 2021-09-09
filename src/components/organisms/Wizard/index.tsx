@@ -3,7 +3,7 @@ import { WizardDot } from "../../atoms";
 import { DotsContainer } from "./styles";
 import { Wizardprops } from "./types";
 
-const Wizard: React.FC<Wizardprops> = ({ dotsStructure, children }) => {
+const Wizard: React.FC<Wizardprops> = ({ dotsStructure, children, selectDot }) => {
     
     return (
         <Fragment>
@@ -11,7 +11,7 @@ const Wizard: React.FC<Wizardprops> = ({ dotsStructure, children }) => {
             {children}
 
             <DotsContainer>
-                <WizardDot dotsStructure={dotsStructure} />
+                <WizardDot dotsStructure={dotsStructure} click={selectDot} />
             </DotsContainer>
         </Fragment>
     );
