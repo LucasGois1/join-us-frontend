@@ -49,10 +49,15 @@ const Login: React.FC = () => {
       setInvalidPassword(false);
     }
 
-    const response = await request.post("/signup", {
-      email,
-      password,
-    });
+    try {
+      await request.post("/signup", {
+        email,
+        password,
+      });
+    } catch (error: any) {
+      useToast('error', 'Um erro inesperado aconteceu! 🙁', error.message);
+    };
+
   };
 
   return (

@@ -27,9 +27,9 @@ const OnBoarding: React.FC = () => {
                 </View>
                 <View style={styles.descriptionContainer}>
                     <Text style={styles.descriptionText}>
-                            Reunia pessoas de forma segura, 
-                            respeitando os limites de lotaçao, para 
-                            que todos possam aproveitar a vida enquanto tomam os cuidados contra o 
+                            Reuna pessoas de forma segura, 
+                            respeitando os limites de lotação, para 
+                            que todos possam aproveitar a vida enquanto tomam cuidado com o 
                             COVID-19
                     </Text>
                 </View>
