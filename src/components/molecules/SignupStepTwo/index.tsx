@@ -1,17 +1,37 @@
-import React, { Fragment } from "react";
-import { View } from "react-native";
+import React, { Fragment, useState, useEffect } from "react";
+import { View, Animated } from "react-native";
+import colors from "../../../styles/colors";
 
 import { FormInput } from './styles';
 
 import { SingupStepTwoProps } from "./types";
 
 const SignupStepTwo = ({ password, invalidPassword, onPasswordChange, confirmPassword, onConfirmPasswordChange, invalidConfirmPassword }: SingupStepTwoProps) => {
+  const [shakePasswordAnimation] = useState(new Animated.Value(0));
+  const [shakePasswordConfirmAnimation] = useState(new Animated.Value(0));
+
+  const startShake = (isPaswword: boolean) => {
+    Animated.sequence([
+      Animated.timing(isPaswword ? shakePasswordAnimation : shakePasswordConfirmAnimation, { toValue: 10, duration: 100, useNativeDriver: true }),
+      Animated.timing(isPaswword ? shakePasswordAnimation : shakePasswordConfirmAnimation, { toValue: -10, duration: 100, useNativeDriver: true }),
+      Animated.timing(isPaswword ? shakePasswordAnimation : shakePasswordConfirmAnimation, { toValue: 10, duration: 100, useNativeDriver: true }),
+      Animated.timing(isPaswword ? shakePasswordAnimation : shakePasswordConfirmAnimation, { toValue: 0, duration: 100, useNativeDriver: true })
+    ]).start();
+ };
+
+  useEffect(() => {
+    invalidPassword && startShake(true);
+  }, [invalidPassword]);
+
+  useEffect(() => {
+    invalidConfirmPassword && startShake(false);
+  }, [invalidConfirmPassword])
 
     return (
         <Fragment>
-            <View>
+            <Animated.View style={{ transform: [{ translateX: shakePasswordAnimation }] }}>
                 <FormInput
-                  placeholderTextColor="#5C6660"
+                  placeholderTextColor={invalidPassword ? colors.red : colors.gray}
                   placeholder="Crie uma senha"
                   keyboardAppearance="light"
                   onChangeText={onPasswordChange}
@@ -19,10 +39,10 @@ const SignupStepTwo = ({ password, invalidPassword, onPasswordChange, confirmPas
                   secureTextEntry={true}
                   isInvalid={invalidPassword}
                 />
-              </View>
-              <View>
+              </Animated.View>
+              <Animated.View style={{ transform: [{ translateX: shakePasswordConfirmAnimation }] }}>
                 <FormInput
-                  placeholderTextColor="#5C6660"
+                  placeholderTextColor={invalidConfirmPassword ? colors.red : colors.gray}
                   placeholder="Confirme a senha"
                   keyboardAppearance="light"
                   onChangeText={onConfirmPasswordChange}
@@ -30,7 +50,7 @@ const SignupStepTwo = ({ password, invalidPassword, onPasswordChange, confirmPas
                   secureTextEntry={true}
                   isInvalid={invalidConfirmPassword}
                 />
-              </View>
+              </Animated.View>
         </Fragment>
     );
 };

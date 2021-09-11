@@ -78,6 +78,7 @@ const CreateAccount: React.FC = () => {
         return;
       } else {
         if(!email.includes('@')) {
+          setInvalidEmail(true);
           useToast("error", "Ops!", "Você precisa inserir um e-mail válido! 😣");
           return;
         } else {
@@ -193,7 +194,7 @@ const CreateAccount: React.FC = () => {
                 {
                   stepOneIsShowing ? (
                     <StepContainer
-                      style={{ transform: [{translateX: isGoing ? sendToLeft : sendToLeftRight}] }}
+                      style={{ transform: [{ translateX: isGoing ? sendToLeft : sendToLeftRight }] }}
                     >
                       <SignupStepOne
                         name={name}

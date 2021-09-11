@@ -10,6 +10,6 @@ export default function useNotification(type: string, text1: string, text2: stri
         text2,
         visibilityTime: 4000,
         autoHide: true,
-        topOffset: 30,
+        topOffset: 40,
       });
 }
