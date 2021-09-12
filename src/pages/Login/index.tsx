@@ -50,10 +50,14 @@ const Login: React.FC = () => {
     }
 
     try {
-      await request.post("/signup", {
+      console.log(email, password);
+      
+      const response  = await request.post("/login", {
         email,
         password,
       });
+
+      console.log(response)
     } catch (error: any) {
       useToast('error', 'Um erro inesperado aconteceu! 🙁', error.message);
     };

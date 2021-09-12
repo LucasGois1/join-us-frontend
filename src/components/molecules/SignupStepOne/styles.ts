@@ -10,6 +10,6 @@ export const FormInput = styled.TextInput<FormInputProps>`
     height: 35px;
     text-align: center;
     margin-bottom: 20px;
-    border-bottom-width: 1px;
+    border-bottom-width: 2px;
     border-bottom-color: ${({ isInvalid }) => isInvalid ? colors.red : colors.dark_white };
 `;
