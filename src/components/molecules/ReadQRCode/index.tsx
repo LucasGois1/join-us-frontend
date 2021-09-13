@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { BarCodeRequest } from './types';
 
-export default function Home() {
-  const [hasPermission, setHasPermission] = useState<any>(null);
-  const [scanned, setScanned] = useState(false);
+const ReadQRCode = () => {
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
+  const [scanned, setScanned] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -13,17 +14,12 @@ export default function Home() {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }: any) => {
+  const handleBarCodeScanned = ({ type, data }: BarCodeRequest) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
-  if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+  if (!hasPermission) alert('Permita o uso da câmera para ler o QR Code!');
 
   return (
     <View style={{width: '100%', height: '90%'}}>
@@ -34,4 +30,6 @@ export default function Home() {
       {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
     </View>
   );
-}
+};
+
+export default ReadQRCode;

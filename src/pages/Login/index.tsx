@@ -33,30 +33,32 @@ const Login: React.FC = () => {
   };
 
   const handleSubmitUser = async () => {
-    if (!email) {
-      setInvalidEmail(true);
-      useToast("error", "Ops!", "Você precisa inserir um e-mail 😅");
-      return;
-    } else {
-      setInvalidEmail(false);
-    }
+    // if (!email) {
+    //   setInvalidEmail(true);
+    //   useToast("error", "Ops!", "Você precisa inserir um e-mail 😅");
+    //   return;
+    // } else {
+    //   setInvalidEmail(false);
+    // }
 
-    if (!password) {
-      setInvalidPassword(true);
-      useToast("error", "Ops!", "Você precisa inserir uma senha 😅");
-      return;
-    } else {
-      setInvalidPassword(false);
-    }
+    // if (!password) {
+    //   setInvalidPassword(true);
+    //   useToast("error", "Ops!", "Você precisa inserir uma senha 😅");
+    //   return;
+    // } else {
+    //   setInvalidPassword(false);
+    // }
 
-    try {
-      await request.post("/signup", {
-        email,
-        password,
-      });
-    } catch (error: any) {
-      useToast('error', 'Um erro inesperado aconteceu! 🙁', error.message);
-    };
+    // try {
+    //   await request.post("/signup", {
+    //     email,
+    //     password,
+    //   });
+    // } catch (error: any) {
+    //   useToast('error', 'Um erro inesperado aconteceu! 🙁', error.message);
+    // };
+
+    handleNextPage('Home')
 
   };
 
