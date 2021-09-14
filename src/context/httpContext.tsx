@@ -13,7 +13,7 @@ export const HttpContext = createContext<HttpMethods>({} as HttpMethods);
 
 export const RequestStorage: React.FC = ({ children }) => {
   class Methods implements HttpMethods {
-    baseUrl: string = "http://192.168.15.6/api";
+    baseUrl: string = "http://54.197.190.34:5000/api";
 
     async get(route: string, token?: string): Promise<any> {
       return await axios.get(`${this.baseUrl}${route}`, {
@@ -38,6 +38,7 @@ export const RequestStorage: React.FC = ({ children }) => {
         },
       });
     }
+
     async delete(route: string, data: any, token?: string): Promise<any> {
       return await axios.post(`${this.baseUrl}${route}`, data, {
         headers: {
