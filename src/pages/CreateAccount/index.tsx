@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { SafeAreaView, KeyboardAvoidingView, ScrollView, Animated } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -42,7 +42,7 @@ const CreateAccount: React.FC = () => {
   const [sendToRight] = useState(new Animated.Value(1000));
   const [sendToLeftRight] = useState(new Animated.Value(-1000));
   const [sendToLeft] = useState(new Animated.Value(0));
-  const [isGoing, setIsGoing] = useState(true);
+  const [isGoing, setIsGoing] = useState<boolean>(true);
 
   const handleNextPage = (screenTitle: string) => navigation.navigate(screenTitle);
 
@@ -56,7 +56,9 @@ const CreateAccount: React.FC = () => {
         password,
         passwordConfirmation,
       });
-      useToast('error', 'Parabéns! 🥳', 'Sua conta foi criada com sucesso!');
+      useToast('success', 'Parabéns! 🥳', 'Sua conta foi criada com sucesso!');
+
+      setTimeout(() => handleNextPage("Login"), 500)
     } catch (error: any) {
       useToast('error', 'Um erro inesperado aconteceu! 🙁', error.message);
     } finally {
@@ -81,9 +83,7 @@ const CreateAccount: React.FC = () => {
           setInvalidEmail(true);
           useToast("error", "Ops!", "Você precisa inserir um e-mail válido! 😣");
           return;
-        } else {
-          setInvalidEmail(false)
-        };
+        } else setInvalidEmail(false);
       };
 
       setTimeout(() => {
