@@ -1,14 +1,14 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import HomeStack from "./homeStack.routes";
 
-import { RequestStorage } from "../context/httpContext";
+import { NavigationContainer } from "@react-navigation/native";
+import { GlobalProvider } from "../context/globalContext";
 
 const Routes: React.FC = () => (
   <NavigationContainer>
-    <RequestStorage>
+    <GlobalProvider>
       <HomeStack />
-    </RequestStorage>
+    </GlobalProvider>
   </NavigationContainer>
 );
 

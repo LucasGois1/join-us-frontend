@@ -1,22 +1,26 @@
 import React, { useContext, useState } from "react";
-import {
-  KeyboardAvoidingView,
-  SafeAreaView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { KeyboardAvoidingView, SafeAreaView } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 
-import GreenButton from "../../components/atoms/GreenButton";
-import LogoImage from "../../components/atoms/LogoImage";
+import { GreenButton, LogoImage } from "../../components/atoms";
+import { LoginForm } from "../../components/molecules";
 
-import useToast from "../../hooks/useToast";
 import { HttpContext } from "../../context/httpContext";
+import useToast from "../../hooks/useToast";
 
-import styles from "./styles";
+import styles, { 
+  BottomBar,
+  ButtonContainer, 
+  Container, 
+  FormContainer, 
+  HaveAccountButton, 
+  HaveAccountContainer, 
+  HaveAccountText, 
+  ImageContainer, 
+  Title, 
+  TitleContainer 
+} from "./styles";
 
 const Login: React.FC = () => {
   const [email, onEmailChange] = useState("");
@@ -24,43 +28,36 @@ const Login: React.FC = () => {
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
 
-  const navigation = useNavigation();
-
   const request: any = useContext(HttpContext);
 
-  const handleNextPage = (screenTitle: string) => {
-    navigation.navigate(screenTitle);
-  };
+  const navigation = useNavigation();
 
   const handleSubmitUser = async () => {
-    // if (!email) {
-    //   setInvalidEmail(true);
-    //   useToast("error", "Ops!", "Você precisa inserir um e-mail 😅");
-    //   return;
-    // } else {
-    //   setInvalidEmail(false);
-    // }
+    if (!email) {
+      setInvalidEmail(true);
+      useToast("error", "Ops!", "Você precisa inserir um e-mail 😅");
+      return;
+    } else setInvalidEmail(false);
 
-    // if (!password) {
-    //   setInvalidPassword(true);
-    //   useToast("error", "Ops!", "Você precisa inserir uma senha 😅");
-    //   return;
-    // } else {
-    //   setInvalidPassword(false);
-    // }
+    if (!password) {
+      setInvalidPassword(true);
+      useToast("error", "Ops!", "Você precisa inserir uma senha 😅");
+      return;
+    } else setInvalidPassword(false);
 
-    // try {
-    //   await request.post("/signup", {
-    //     email,
-    //     password,
-    //   });
-    // } catch (error: any) {
-    //   useToast('error', 'Um erro inesperado aconteceu! 🙁', error.message);
-    // };
+    try {
+      await request.post("/login", {
+        email,
+        password,
+      });
 
-    handleNextPage('Home')
-
+      handleNextPage('Home');
+    } catch (error: any) {
+      useToast('error', 'Um erro inesperado aconteceu! 🙁', error.message);
+    };
   };
+
+  const handleNextPage = (screenTitle: string) => navigation.navigate(screenTitle);
 
   return (
     <SafeAreaView>
@@ -69,65 +66,42 @@ const Login: React.FC = () => {
         behavior="position"
         enabled
       >
-        <View style={styles.container}>
-          <View style={styles.imageContainer}>
+        <Container>
+          <ImageContainer>
             <LogoImage />
-          </View>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>Join Us!</Text>
-          </View>
-          <View style={styles.formContainer}>
-            <View>
-              <TextInput
-                style={{
-                  ...styles.formInput,
-                  borderBottomColor: invalidEmail
-                    ? "#E83F5B"
-                    : styles.formInput["borderBottomColor"],
-                }}
-                placeholderTextColor="#5C6660"
-                keyboardType="email-address"
-                placeholder="Digite seu email"
-                onChangeText={onEmailChange}
-                value={email}
-              />
-            </View>
-            <View>
-              <TextInput
-                style={{
-                  ...styles.formInput,
-                  borderBottomColor: invalidPassword
-                    ? "#E83F5B"
-                    : styles.formInput["borderBottomColor"],
-                }}
-                placeholderTextColor="#5C6660"
-                placeholder="Digite sua senha"
-                onChangeText={onPasswordChange}
-                value={password}
-                secureTextEntry={true}
-              />
-            </View>
-            <View style={styles.haveAccountContainer}>
-              <TouchableOpacity
-                style={styles.haveAccountButton}
-                onPress={() => handleNextPage("CreateAccount")}
-              >
-                <Text style={styles.haveAccountText}>
-                  Ainda não tenho uma conta
-                </Text>
-              </TouchableOpacity>
-            </View>
+          </ImageContainer>
+          <TitleContainer>
+            <Title>Join Us!</Title>
+          </TitleContainer>
+          <FormContainer>
+            <LoginForm 
+              email={email}
+              invalidEmail={invalidEmail}
+              onEmailChange={onEmailChange}
+              password={password}
+              invalidPassword={invalidPassword}
+              onPasswordChange={onPasswordChange}
+            />
+          </FormContainer>
+          <BottomBar>
+            <HaveAccountContainer>
+                <HaveAccountButton onPress={() => handleNextPage("CreateAccount")}>
+                  <HaveAccountText>
+                    Ainda não tenho uma conta
+                  </HaveAccountText>
+                </HaveAccountButton>
+              </HaveAccountContainer>
 
-            <View style={styles.buttonContainer}>
-              <GreenButton
-                style={styles.button}
-                active={true}
-                title="Entrar"
-                onPress={handleSubmitUser}
-              />
-            </View>
-          </View>
-        </View>
+              <ButtonContainer>
+                <GreenButton
+                  style={styles.button}
+                  active={true}
+                  title="Entrar"
+                  onPress={handleSubmitUser}
+                />
+              </ButtonContainer>
+          </BottomBar>
+        </Container>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

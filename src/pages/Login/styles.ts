@@ -1,66 +1,82 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
+import styled from 'styled-components/native';
 import colors from '../../styles/colors';
 
+export const Container = styled.View`
+    padding: 0 30px;
+
+    align-items: center;
+    justify-content: space-between;
+    height: 98%;
+`;
+
+export const ImageContainer = styled(Animated.View)``;
+
+export const TitleContainer = styled.View`
+    justify-content: center;
+    align-items: center;
+`;
+
+export const Title = styled.Text`
+    font-size: 32px;
+    line-height: 38px;
+    color: ${colors.green_dark};
+    font-weight: 600;
+`;
+
+export const FormContainer = styled.View`
+    width: 100%;
+`;
+
+export const StepContainer = styled(Animated.View)``;
+
+export const HaveAccountContainer = styled.View`
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const HaveAccountButton = styled.TouchableOpacity`
+    background-color: ${colors.white};
+    justify-content: center;
+    align-items: center;
+`;
+
+export const HaveAccountText = styled.Text`
+    text-align: center;
+`;
+
+export const ButtonContainer = styled(Animated.View)`
+    justify-content: center;
+    align-items: center;
+`;
+
+export const BottomBar = styled.View`
+    width: 100%;
+    height: 16%;
+    justify-content: space-between;
+`;
+
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        paddingHorizontal: 30,
-    },
-    imageContainer: {
-        marginTop: 20,
-        marginBottom: 15
-    },
-    titleContainer: {
-        marginBottom: 25,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    titleText: {
-        fontSize: 32,
-        lineHeight: 38,
-        color: colors.green_dark,
-        fontWeight: '600'
-    },
-    formContainer: {
-        width: '100%',
-    },
-    formInput: {
-        width: '100%',
-        height: 35,
-        textAlign: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.dark_white,
-        marginBottom: 20
-    },
-    formInputPlaceHolder: {
-        color: colors.gray
-    },
-    haveAccountContainer: {
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    haveAccountButton: {
-        backgroundColor: colors.white,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    haveAccountText: {
-        textAlign: 'center'
-    },
-    buttonContainer: {
-        justifyContent: 'center',
-        alignItems: 'center'
+    scrollViewContainer: {
+        height: '100%',
+        justifyContent: 'space-between',
     },
     button: {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.green,
-        width: '80%',
+        width: '100%',
         height: 60,
         borderRadius: 15,
-        marginTop: 20
+    },
+    alternativeButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.green,
+        width: 56,
+        height: 56,
+        borderRadius: 15,
     },
 });
 
